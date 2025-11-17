@@ -20,55 +20,50 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
+# Virtual environments
 venv/
-env/
 ENV/
+env/
 .venv
 
-# IDE
+# Environment variables
+.env
+.env.local
+
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# OS
+.DS_Store
+Thumbs.db
 
-# Environment variables
-.env
-.env.local
-config/config.local.yaml
-
-# Data & Models
-data/datasets/*
-!data/datasets/.gitkeep
-data/models/*
-!data/models/.gitkeep
-data/vector_db/
-
-# Outputs
-output/
+# Logs
 logs/
 *.log
-
-# Reports
-reports/
-*.json
-*.md
-!README.md
-!projet-multi-agents-desinformation.md
-!technique-approfondi.md
 
 # Database
 *.db
 *.sqlite
 *.sqlite3
 
-# Cache
-.cache/
-*.cache
+# Data
+data/raw/
+data/processed/
+data/cache/
+
+# Models
+models/*.pt
+models/*.pth
+models/*.h5
+models/*.pkl
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
 
 # Testing
 .pytest_cache/
@@ -76,11 +71,5 @@ reports/
 htmlcov/
 .tox/
 
-# OS
-.DS_Store
-Thumbs.db
-
-# API Keys (sécurité)
-*_api_key*
-*_secret*
-credentials.json
+# Docker
+.dockerignore

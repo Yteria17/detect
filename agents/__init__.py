@@ -15,3 +15,4 @@ __all__ = [
     'FactCheckerAgent',
     'ReporterAgent'
 ]
+"""Multi-agent system for misinformation detection."""
