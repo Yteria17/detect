@@ -1,0 +1,86 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environment variables
+.env
+.env.local
+config/config.local.yaml
+
+# Data & Models
+data/datasets/*
+!data/datasets/.gitkeep
+data/models/*
+!data/models/.gitkeep
+data/vector_db/
+
+# Outputs
+output/
+logs/
+*.log
+
+# Reports
+reports/
+*.json
+*.md
+!README.md
+!projet-multi-agents-desinformation.md
+!technique-approfondi.md
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache
+.cache/
+*.cache
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# API Keys (sécurité)
+*_api_key*
+*_secret*
+credentials.json
