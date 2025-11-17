@@ -7,11 +7,6 @@ __pycache__/
 *.so
 
 # Distribution / packaging
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
 .Python
 build/
 develop-eggs/
@@ -81,6 +76,7 @@ target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb
 
 # IPython
 profile_default/
@@ -104,6 +100,7 @@ celerybeat.pid
 
 # Environments
 .env
+.env.local
 .venv
 env/
 venv/
@@ -129,31 +126,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Application specific
-logs/
-*.log
-data/
-*.db
-*.sqlite
-
-# Docker
-docker-compose.override.yml
-
-# IDE
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual environments
-venv/
-ENV/
-env/
-.venv
-
-# Environment variables
-.env
-.env.local
-
 # IDEs
 .vscode/
 .idea/
@@ -168,35 +140,35 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
-# Logs
-logs/
-*.log
 
-# Database
+# Application specific - Logs
+logs/
+
+# Application specific - Database
 *.db
 *.sqlite
 *.sqlite3
 
-# Data
+# Application specific - Data
+# Keep structure but ignore content (except .gitkeep)
+data/datasets/*
+!data/datasets/.gitkeep
+data/models/*
+!data/models/.gitkeep
 data/raw/
 data/processed/
 data/cache/
 
-# Models
-models/*.pt
-models/*.pth
-models/*.h5
-models/*.pkl
+# Application specific - Output
+output/reports/*
+!output/reports/.gitkeep
 
-# Jupyter
-.ipynb_checkpoints/
-*.ipynb
-
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
-.tox/
+# Application specific - Models (trained)
+*.pt
+*.pth
+*.h5
+*.pkl
 
 # Docker
+docker-compose.override.yml
 .dockerignore
