@@ -1,0 +1,35 @@
+# Prometheus configuration for Multi-Agent Fact-Checking System
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'factcheck-system'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: []
+
+# Rule files
+rule_files: []
+
+# Scrape configurations
+scrape_configs:
+  # Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # Scrape FastAPI application metrics
+  - job_name: 'factcheck_api'
+    static_configs:
+      - targets: ['api:9090']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Scrape Node Exporter (if available)
+  - job_name: 'node'
+    static_configs:
+      - targets: ['node-exporter:9100']
