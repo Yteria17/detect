@@ -1,3 +1,79 @@
+# Core Dependencies
+python>=3.9
+
+# LangChain & LangGraph
+langgraph>=0.2.0
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-core>=0.3.0
+
+# LLMs
+anthropic>=0.40.0  # Claude
+openai>=1.0.0  # GPT-4
+
+# Vector Stores & Embeddings
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+faiss-cpu>=1.7.0
+weaviate-client>=4.0.0
+
+# NLP & Text Processing
+spacy>=3.7.0
+transformers>=4.35.0
+torch>=2.0.0
+nltk>=3.8.0
+
+# Retrieval (BM25 + Hybrid)
+rank-bm25>=0.2.2
+
+# Web Scraping & APIs
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+tweepy>=4.14.0  # Twitter API
+praw>=7.7.0  # Reddit API
+feedparser>=6.0.10  # RSS feeds
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Database
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.0  # PostgreSQL
+redis>=5.0.0
+
+# API Framework
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# Video/Audio Processing (Deepfake Detection)
+opencv-python>=4.8.0
+librosa>=0.10.0
+mediapipe>=0.10.0
+
+# Visualization & Dashboard
+streamlit>=1.28.0
+plotly>=5.17.0
+matplotlib>=3.7.0
+
+# Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+
+# Development
+black>=23.7.0
+flake8>=6.1.0
+mypy>=1.5.0
+
+# Configuration
+pyyaml>=6.0
+python-dotenv>=1.0.0
+
+# Utilities
+tqdm>=4.66.0
+python-dateutil>=2.8.0
 # Core dependencies
 python-dotenv==1.0.0
 pydantic==2.5.0
