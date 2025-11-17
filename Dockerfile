@@ -1,6 +1,8 @@
 # Multi-stage Dockerfile for Multi-Agent Fact-Checking System
 
 # Stage 1: Base image with Python and dependencies
+# Multi-stage build for misinformation detection system
+
 FROM python:3.11-slim as base
 
 # Set environment variables
@@ -24,6 +26,14 @@ WORKDIR /app
 FROM base as dependencies
 
 # Copy requirements file
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy requirements first for better caching
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -50,6 +60,17 @@ EXPOSE 9090
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+# Copy application code
+COPY . .
+
+# Create logs directory
+RUN mkdir -p /app/logs
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
 # Run the application

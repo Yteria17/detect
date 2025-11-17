@@ -49,11 +49,31 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: factcheck_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-factcheck_db}
+      POSTGRES_USER: ${POSTGRES_USER:-factcheck_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-factcheck_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-factcheck_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - factcheck_network
 
   # Redis Cache
   redis:
     image: redis:7-alpine
     container_name: factcheck_redis
+    command: redis-server --requirepass ${REDIS_PASSWORD:-redis_password}
     ports:
       - "6379:6379"
     volumes:
@@ -99,6 +119,62 @@ services:
       - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
     depends_on:
       - prometheus
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - factcheck_network
+
+  # Weaviate Vector Database
+  weaviate:
+    image: semitechnologies/weaviate:latest
+    container_name: factcheck_weaviate
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'none'
+      ENABLE_MODULES: ''
+      CLUSTER_HOSTNAME: 'node1'
+    ports:
+      - "8080:8080"
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    networks:
+      - factcheck_network
+
+  # FastAPI Application
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: factcheck_api
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-factcheck_db}
+      - POSTGRES_USER=${POSTGRES_USER:-factcheck_user}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-factcheck_password}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-redis_password}
+      - WEAVIATE_URL=http://weaviate:8080
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      weaviate:
+        condition: service_started
     networks:
       - factcheck_network
     restart: unless-stopped
@@ -128,6 +204,22 @@ services:
       - factcheck_network
     profiles:
       - dev
+  # Streamlit Dashboard
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: factcheck_dashboard
+    command: streamlit run dashboard/app.py --server.port 8501 --server.address 0.0.0.0
+    environment:
+      - API_BASE_URL=http://api:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    networks:
+      - factcheck_network
+    restart: unless-stopped
 
 networks:
   factcheck_network:
@@ -138,3 +230,4 @@ volumes:
   redis_data:
   prometheus_data:
   grafana_data:
+  weaviate_data:
